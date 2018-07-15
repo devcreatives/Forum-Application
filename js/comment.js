@@ -1,0 +1,95 @@
+var x = location.hash;
+var z = x.substring(1);
+if(z!='')
+{var database = firebase.database();
+document.title = "Forum Application || Topic - "+z;
+var user = localStorage.getItem("username");
+var c = document.getElementById('jumb');
+var container;
+var b;
+var comment ;
+var myVar = setInterval(load, 10000);
+checkuser();
+var mode = localStorage.getItem("mode");
+	var pagestyle = document.getElementById('pagestyle');
+	if(mode == "dark"){
+		pagestyle.setAttribute('href', 'css/dark.css');
+	}
+	else if (mode == "advance") {
+		pagestyle.setAttribute('href', 'css/advance.css');
+	}
+	else {
+		pagestyle.setAttribute('href', 'css/style.css');
+	}
+load();
+function clearContents(element) {
+  element.value = '';
+}
+function checkuser()
+{
+  database.ref('topics/').once('value').then(function(snapshot) {
+    for (var i in snapshot.val()) {
+  if(z == snapshot.val()[i].topic)
+{
+  c.innerHTML=z+ "<h2><span class='label label-warning'> Topic By : "+ snapshot.val()[i].by+"</span></h2>";
+  document.getElementById('user').innerHTML +="<h2><span class='label label-danger'> Current User : "+ user+"</span></h2><br>";
+}
+}});
+}
+
+function back()
+{
+  window.location="dashboard.html#"+user;
+}
+function logout()
+{
+	var a = confirm('Are you sure ?');
+	if(a==true)
+	{
+  window.location="index.html#"+user;
+}
+else {
+	location.reload();
+}
+}
+function addComment()
+{
+  container = document.getElementById('containerdo');
+  document.getElementById('containerdo').style.visibility='visible';
+  document.getElementById('myModal').style.display='none';
+  comment = document.getElementById('commentinformation').value;
+  if(comment!='')
+  {
+  save();
+  load();
+}
+}
+function save()
+{
+  b=database.ref('comment/'+z).push(
+      {comment,
+        by: user}
+  );
+}
+function load()
+{
+  var container = document.getElementById('containerdo');
+  database.ref('comment/'+z).once('value').then(function(snapshot) {
+    for (var i in snapshot.val()) {
+    container.innerHTML += "<div id="+i+"><span class='glyphicon glyphicon-user' id='img'></span><h4 id='topi'>"+snapshot.val()[i].comment+"</h4> <h6> by "+snapshot.val()[i].by+"</h6></div><hr>";
+}});
+    container.innerHTML='';
+}
+function newMethod()
+{
+  document.getElementById('containerdo').style.visibility='hidden';
+  document.getElementById('myModal').style.display='inline-block';
+  document.getElementById('adt').style.visibility="visible";
+}
+function methodm()
+{
+  document.getElementById('containerdo').style.visibility='visible';
+  document.getElementById('myModal').style.display='none';
+  document.getElementById('adt').style.visibility="visible";
+}
+}
