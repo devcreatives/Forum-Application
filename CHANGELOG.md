@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to the "Forum Application" extension will be documented in this file.
+All notable changes to the "Forum Application" will be documented in this file.
 
 ## Forum Application [1.0.0] - 2019-09-01 (Released) 
 ### Added
